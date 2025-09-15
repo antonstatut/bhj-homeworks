@@ -4,20 +4,23 @@ const input = document.querySelector(".tasks__input");
 
 btn.addEventListener("click", (event) => {
     event.preventDefault();
-    const div = document.createElement("div");
-    tasksList.append(div);
-    div.classList.add("task");
-    const divSub = document.createElement("div");
-    div.append(divSub);
-    divSub.classList.add("task__title");
-    divSub.textContent = input.value;
-    const a = document.createElement('a');
-    a.setAttribute("href", "#");
-    a.innerHTML = "&times;";
-    a.classList.add("task__remove");
-    div.append(a);
-    a.addEventListener("click", () => {
-        div.remove();
-    });
+    if(input.value.trim() === ""){
+        alert("Заполните поле вводимой задачи!");
+        return
+    }else{
+        tasksList.insertAdjacentHTML('afterbegin', `
+            <div class="task">
+                <div class="task__title">
+                    ${input.value}
+                </div>
+                <a href="#" class="task__remove">&times;</a>
+            </div>
+        `);
+        const div = document.querySelector(".task")
+        const a = document.querySelector(".task__remove");
+        a.addEventListener("click", () => {
+            div.remove();
+        });
+        input.value = "";
+    }
 });
-
