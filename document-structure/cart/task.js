@@ -19,17 +19,17 @@ const product = document.querySelectorAll(".product");
 const productImage = document.querySelectorAll(".product__image");
 productAdd.forEach((element, i) => {
     element.addEventListener("click", () => {
-        const div = document.createElement('div');
-        products.append(div);
-        div.classList.add("cart__product");
-        div.dataset.id = product[i].dataset.id;
-        const img = document.createElement('img');
-        img.classList.add("cart__product-image");
-        img.src = productImage[i].src;
-        div.append(img);
-        const divCount = document.createElement('div');
-        divCount.classList.add("cart__product-count");
-        divCount.textContent = prodValue[i].textContent;
-        div.append(divCount);
+
+        if(!products.querySelector(`[data-id="${product[i].dataset.id}"]`)){
+            products.insertAdjacentHTML('afterbegin', `
+                <div class="cart__product" data-id=${product[i].dataset.id}>
+                    <img class="cart__product-image" src=${productImage[i].src}>
+                    <div class="cart__product-count">${prodValue[i].textContent}</div>
+                </div>
+            `);
+        }else{
+            let productCount = document.querySelector(".cart__product-count");
+            productCount.textContent = Number(productCount.textContent) + Number(prodValue[i].textContent);
+        }
     });
 });
